@@ -61,37 +61,10 @@
       "service": "open-seo-audit",
     },
   ],
-  "migrations": [
-    {
-      "tag": "v1",
-      "new_sqlite_classes": ["OnboardingChatAgent"],
-    },
-    {
-      "tag": "v2",
-      "new_sqlite_classes": ["SamChatAgent"],
-    },
-    {
-      "tag": "v3",
-      "new_sqlite_classes": ["AuditScratchpad"],
-    },
-    // AuditScratchpad moved to the open-seo-audit worker (no binding may
-    // still reference the class name in the same upload — see the services
-    // comment above). Deleting it here is safe: scratchpad state is
-    // disposable by design (destroyed at finalize, 7-day cleanup alarm) —
-    // in-flight audits at the cutover fail once and the stale-audit
-    // reconciler reaps them.
-    {
-      "tag": "v4",
-      "deleted_classes": ["AuditScratchpad"],
-    },
-    // The onboarding strategy chat was removed: the namespace had had zero
-    // invocations for months. Deleting the class destroys every instance's
-    // stored conversation, which is the intent — nothing else reads it.
-    {
-      "tag": "v5",
-      "deleted_classes": ["OnboardingChatAgent"],
-    },
-  ],
+ // ADD this instead:
+"exports": {
+  "AuditScratchpad": { "type": "durable-object", "storage": "sqlite" }
+},
   "triggers": {
     // Every 5 min: rank checks + stale-audit reconcile. Daily: OAuth KV GC.
     // Dispatched on controller.cron in src/server.ts `scheduled`.
