@@ -51,19 +51,19 @@
   // (no OAUTH_KV here; only the app worker runs OAuth), and miniflare derives
   // local storage filenames from these ids.
   "kv_namespaces": [
-    {
-      "binding": "KV",
-      "id": "4abd52f3f2c549ac83cc2cb4ceec8620",
-    },
-  ],
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "open-seo",
-      "database_id": "37bee90a-e1aa-404f-b01e-b0d1d479bda1",
-      "migrations_dir": "drizzle",
-    },
-  ],
+  {
+    "binding": "KV",
+    "id": "b05875be5ba445cb939a25e20e184c4a",
+  },
+],
+"d1_databases": [
+  {
+    "binding": "DB",
+    "database_name": "open-seo",
+    "database_id": "9e0d0f8e-2160-46ac-aad0-cc9eb2e55791",
+    "migrations_dir": "drizzle",
+  },
+],
   // Postgres scale path — same rules as wrangler.jsonc: only local Postgres
   // dev reads this block. Uncomment together with the block in wrangler.jsonc
   // per docs/LOCAL_POSTGRES.md.
