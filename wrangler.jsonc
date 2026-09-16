@@ -107,15 +107,9 @@
   // from an HMAC of `id`/`database_id`. Changing them orphans every existing
   // local and self-hosted database. Leave them as-is.
   "kv_namespaces": [
-    {
-      "binding": "KV",
-      "id": "4abd52f3f2c549ac83cc2cb4ceec8620",
-    },
-    {
-      "binding": "OAUTH_KV",
-      "id": "bd1759494309474a9b423b029967b0db",
-    },
-  ],
+  { "binding": "KV", "id": "b05875be5ba445cb939a25e20e184c4a" },
+  { "binding": "OAUTH_KV", "id": "4731094665324705846eaa84993b9616" }
+],
   "d1_databases": [
     {
       "binding": "DB",
