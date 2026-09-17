@@ -61,11 +61,6 @@
       "service": "open-seo-audit",
     },
   ],
-
-"vars": {
-  "TEAM_DOMAIN": "https://nameless-limit-02ac.cloudflareaccess.com",
-  "POLICY_AUD": "ae04cd05096ff4f50a75afd6e26f084fb35b44b4c1b037c8e5d7eaf217613a51"
-},
 "migrations": [
   { "tag": "v3-sam-chat-agent", "new_sqlite_classes": ["SamChatAgent"] },
   { "tag": "v4-delete-audit-scratchpad", "deleted_classes": ["AuditScratchpad"] }
