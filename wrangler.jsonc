@@ -63,10 +63,9 @@
   ],
  // ADD this instead:
 "migrations": [
-  { "tag": "v1", "new_sqlite_classes": ["SamChatAgent"] },
-  { "tag": "v2", "deleted_classes": ["AuditScratchpad"] }
-]
-,
+  { "tag": "v3-sam-chat-agent", "new_sqlite_classes": ["SamChatAgent"] },
+  { "tag": "v4-delete-audit-scratchpad", "deleted_classes": ["AuditScratchpad"] }
+],
   "triggers": {
     // Every 5 min: rank checks + stale-audit reconcile. Daily: OAuth KV GC.
     // Dispatched on controller.cron in src/server.ts `scheduled`.
