@@ -38,12 +38,9 @@
       },
     ],
   },
-  "migrations": [
-    {
-      "tag": "v1",
-      "new_sqlite_classes": ["AuditScratchpad"],
-    },
-  ],
+ "migrations": [
+  { "tag": "v1", "new_sqlite_classes": ["AuditScratchpad"] }
+],
   // This config serves local dev and Docker self-host only; Alchemy
   // deployments provision the audit worker from alchemy.run.ts and never read
   // these ids. Mirror any DB/KV/R2 resource-id edits you make in
