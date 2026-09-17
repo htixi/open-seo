@@ -61,6 +61,7 @@
       "service": "open-seo-audit",
     },
   ],
+"vars": {},
 "migrations": [
   { "tag": "v3-sam-chat-agent", "new_sqlite_classes": ["SamChatAgent"] },
   { "tag": "v4-delete-audit-scratchpad", "deleted_classes": ["AuditScratchpad"] }
