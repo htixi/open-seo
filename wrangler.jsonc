@@ -62,9 +62,11 @@
     },
   ],
  // ADD this instead:
-"exports": {
-  "AuditScratchpad": { "type": "durable-object", "storage": "sqlite" }
-},
+"migrations": [
+  { "tag": "v1", "new_sqlite_classes": ["SamChatAgent"] },
+  { "tag": "v2", "deleted_classes": ["AuditScratchpad"] }
+]
+,
   "triggers": {
     // Every 5 min: rank checks + stale-audit reconcile. Daily: OAuth KV GC.
     // Dispatched on controller.cron in src/server.ts `scheduled`.
