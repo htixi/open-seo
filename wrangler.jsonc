@@ -63,7 +63,7 @@
   ],
 
 "vars": {
-  "TEAM_DOMAIN": "nameless-limit-02ac.cloudflareaccess.com",
+  "TEAM_DOMAIN": "https://nameless-limit-02ac.cloudflareaccess.com",
   "POLICY_AUD": "ae04cd05096ff4f50a75afd6e26f084fb35b44b4c1b037c8e5d7eaf217613a51"
 },
 "migrations": [
