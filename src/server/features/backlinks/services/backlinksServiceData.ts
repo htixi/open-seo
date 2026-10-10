@@ -1,5 +1,6 @@
 import { z } from "zod";
 import type { BillingCustomerContext } from "@/server/billing/subscription";
+import type { DataforseoApiCallCost } from "@/server/lib/dataforseo/envelope";
 import type { CreditFeature } from "@/shared/billing-credit-features";
 import {
   createDataforseoClient,
@@ -159,6 +160,7 @@ export async function profileBacklinksRowsPage(
   input: BacklinksRowsPageServiceInput,
   billingCustomer: BillingCustomerContext,
   spamOptions?: BacklinksSpamFilterOptions,
+  onBilling?: (cost: DataforseoApiCallCost) => void,
 ): Promise<BacklinksRowsPageResult> {
   const cached = backlinksRowsPageResultSchema.safeParse(
     await cache.get(cacheKey),
@@ -167,7 +169,7 @@ export async function profileBacklinksRowsPage(
     return cached.data;
   }
 
-  const dataforseo = createDataforseoClient(billingCustomer);
+  const dataforseo = createDataforseoClient(billingCustomer, onBilling);
   const offset = (input.page - 1) * input.pageSize;
 
   const target = normalizeBacklinksTarget(input.target, { scope: input.scope });

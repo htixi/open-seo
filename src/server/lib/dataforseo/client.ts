@@ -74,16 +74,21 @@ function meter<I, T>(
   customer: BillingCustomerContext,
   fetcher: (input: I) => Promise<DataforseoApiResponse<T>>,
   defaultFeature?: CreditFeature,
+  onBilling?: (cost: DataforseoApiCallCost) => void,
 ): (input: I & { creditFeature?: CreditFeature }) => Promise<T> {
   return (input) =>
     meterDataforseoCall(
       customer,
       () => fetcher(input),
       input.creditFeature ?? defaultFeature,
+      onBilling,
     );
 }
 
-export function createDataforseoClient(customer: BillingCustomerContext) {
+export function createDataforseoClient(
+  customer: BillingCustomerContext,
+  onBacklinksRowsBilling?: (cost: DataforseoApiCallCost) => void,
+) {
   return {
     business: {
       businessListings: meter(
@@ -100,7 +105,7 @@ export function createDataforseoClient(customer: BillingCustomerContext) {
     },
     backlinks: {
       summary: meter(customer, fetchBacklinksSummary),
-      rows: meter(customer, fetchBacklinksRows),
+      rows: meter(customer, fetchBacklinksRows, undefined, onBacklinksRowsBilling),
       referringDomains: meter(customer, fetchReferringDomains),
       domainPages: meter(customer, fetchDomainPagesSummary),
       history: meter(customer, fetchBacklinksHistory),
@@ -151,12 +156,19 @@ async function meterDataforseoCall<T>(
   customer: BillingCustomerContext,
   execute: () => Promise<DataforseoApiResponse<T>>,
   creditFeature?: CreditFeature,
+  onBilling?: (cost: DataforseoApiCallCost) => void,
 ): Promise<T> {
   const isHostedMode = await isHostedServerAuthMode();
 
   if (!isHostedMode) {
-    const result = await execute();
-    return result.data;
+    try {
+      const result = await execute();
+      onBilling?.(result.billing);
+      return result.data;
+    } catch (error) {
+      if (error instanceof DataforseoChargedTaskError) onBilling?.(error.billing);
+      throw error;
+    }
   }
 
   const billingCustomer = await getOrCreateOrganizationCustomer(customer);
@@ -170,6 +182,7 @@ async function meterDataforseoCall<T>(
     result = await execute();
   } catch (error) {
     if (error instanceof DataforseoChargedTaskError) {
+      onBilling?.(error.billing);
       // A malformed request (DataForSEO "Invalid Field: ...") that DataForSEO
       // did not bill returns no value to the customer, so don't charge — surface
       // it as a non-reportable VALIDATION_ERROR. If DataForSEO still billed us
@@ -196,6 +209,8 @@ async function meterDataforseoCall<T>(
     monthlyRemaining,
     creditFeature,
   });
+
+  onBilling?.(result.billing);
 
   return result.data;
 }

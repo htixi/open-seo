@@ -16,6 +16,7 @@ import {
   type TopPagesPageServiceInput,
 } from "@/server/features/backlinks/services/backlinksServiceData";
 import type { BillingCustomerContext } from "@/server/billing/subscription";
+import type { DataforseoApiCallCost } from "@/server/lib/dataforseo/envelope";
 import type { CreditFeature } from "@/shared/billing-credit-features";
 
 const defaultCache: BacklinksCache = {
@@ -61,6 +62,7 @@ function createBacklinksService(cache: BacklinksCache = defaultCache) {
       input: BacklinksRowsPageServiceInput,
       billingCustomer: BillingCustomerContext,
       options?: BacklinksSpamFilterOptions,
+      onBilling?: (cost: DataforseoApiCallCost) => void,
     ) {
       const cacheKey = await buildPageCacheKey(
         "backlinks:rows-page",
@@ -75,6 +77,7 @@ function createBacklinksService(cache: BacklinksCache = defaultCache) {
         input,
         billingCustomer,
         options,
+        onBilling,
       );
     },
     async profileReferringDomainsPage(
